@@ -1,37 +1,34 @@
 package progetto.liste;
 
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 public class GUI implements ActionListener{
     JFrame frame = new JFrame("Progetto-Liste");
     
+    
     DefaultListModel modUno;
     DefaultListModel modDue;
     JList uno = new JList(modUno = new DefaultListModel());
     JList due = new JList(modDue = new DefaultListModel());
+    JScrollPane scrollPaneUno = new JScrollPane(uno);
+    JScrollPane scrollPaneDue = new JScrollPane(due);
+    
     
     JPanel btnPanel = new JPanel();
     JButton copia = new JButton("Copia");
     JButton taglia = new JButton("Taglia");
+    JButton delAll = new JButton("Elimina Tutto");
     
     JPanel files = new JPanel();
     JTextField target = new JTextField();
@@ -39,37 +36,30 @@ public class GUI implements ActionListener{
     
     public GUI() {
         //initModUno();
-        initModDue();
-        initCopia();
+        //initModDue();
+
         initTarget();
-        initTaglia();
+        initBtnPanelButtons();
         initBtnPanel();
         initFrame();    
     }
 
-    private void initModUno(){
-        modUno.addElement("uno");
-        modUno.addElement("due");
-        modUno.addElement("tre");
-    }
-    
-    private void initModDue(){
-        modDue.addElement("VUOTO");
-    }
-    
     private void initBtnPanel(){
         btnPanel.add(copia);
         btnPanel.add(taglia);
+        btnPanel.add(delAll);
         //btnPanel.setVisible(true);
     }
-    
-    private void initCopia(){
+ 
+    private void initBtnPanelButtons(){
         copia.setActionCommand("copia");
         copia.addActionListener(this);
-    }
-    private void initTaglia(){
+        
         taglia.setActionCommand("taglia");
         taglia.addActionListener(this);
+        
+        delAll.setActionCommand("del");
+        delAll.addActionListener(this);
     }
     
     private void initTarget(){
@@ -78,19 +68,20 @@ public class GUI implements ActionListener{
     }
     
     private void initFrame(){
-        
         frame.add(target,"North");
-        //frame.add(submit,"South");
-        frame.add(uno,"West");
-        frame.add(due,"East");
+        
+        frame.add(scrollPaneUno,"West");
+        frame.add(scrollPaneDue,"East");
+        
         frame.add(btnPanel,"Center");
         
-        frame.setSize(400, 600);
+        frame.setSize(900, 400);
+        frame.setResizable(false);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
-    boolean firstTime = true;
+    boolean firstTime = false;
     @Override
     public void actionPerformed(ActionEvent e) {
         int i,j;
@@ -144,9 +135,21 @@ public class GUI implements ActionListener{
             File f = new File((String)target.getText());
             ArrayList<String> names = new ArrayList<>(Arrays.asList(f.list()));
             for(String name:names){
-                System.out.println(name);
+                //System.out.println(name); //debug string :D
                 modUno.addElement(name);
             }
+        }
+        
+        if("del".equals(e.getActionCommand())){
+           // modUno.removeAllElements();
+           // modDue.removeAllElements();
+            
+           if(!uno.isSelectionEmpty()){
+            
+               System.out.println("Il coso e' selezionato");
+           }
+           else
+               System.out.println("Non e' selezionato");
         }
     }
 }
