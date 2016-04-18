@@ -141,15 +141,15 @@ public class GUI implements ActionListener{
         }
         
         if("del".equals(e.getActionCommand())){
-           // modUno.removeAllElements();
-           // modDue.removeAllElements();
+            modUno.removeAllElements();
+            modDue.removeAllElements();
             
-           if(!uno.isSelectionEmpty()){
+           /*if(scrollPaneUno.is){
             
                System.out.println("Il coso e' selezionato");
            }
            else
-               System.out.println("Non e' selezionato");
+               System.out.println("Non e' selezionato");*/
         }
     }
 }
